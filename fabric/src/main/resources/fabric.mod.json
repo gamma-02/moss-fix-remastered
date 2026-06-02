@@ -2,13 +2,13 @@
   "schemaVersion": 1,
   "id": "moss-fix",
   "version": "${version}",
-  "name": "Moss FIx",
-  "description": "",
+  "name": "Moss Fix",
+  "description": "Highly configurable server-side mod that fixes moss by allowing spread under transparent blocks",
   "authors": [
     "Gamma_02"
   ],
   "contact": {
-    "homepage": ""
+    "homepage": "https://modrinth.com/mod/moss-fix"
   },
   "license": "MIT",
   "icon": "assets/moss-fix/icon.png",
@@ -28,8 +28,5 @@
     "fabricloader": ">=0.19.3",
     "minecraft": "~1.21.1",
     "java": ">=21"
-  },
-  "suggests": {
-    "another-mod": "*"
   }
 }

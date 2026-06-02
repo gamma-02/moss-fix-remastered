@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.VegetationPatchFeature;
@@ -21,17 +20,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
-/**
- * Idea for detecting bonemeal configured feature:
- * depth: ConstantInt.of(1)
- * xZRadius: UniformInt.of(1, 2)
- *
- *  OR!!
- *
- *  chunk generator phase?
- */
 public class MossFixVegetationPatch extends VegetationPatchFeature {
-    private static Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     public MossFixVegetationPatch(Codec<VegetationPatchConfiguration> codec) {
         super(codec);

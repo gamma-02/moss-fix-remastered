@@ -9,9 +9,9 @@ version = "${version}"
 displayName = "Moss FIx"
 authors = "Gamma_02"
 description = '''
-
+Highly configurable server-side mod that fixes moss by allowing spread under transparent blocks
 '''
-#logoFile = ""
+logoFile = "assets/moss-fix/icon.png"
 
 [[dependencies.moss-fix]]
 modId = "neoforge"
