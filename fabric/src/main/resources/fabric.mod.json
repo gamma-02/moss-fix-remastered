@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "moss-fix",
+  "version": "${version}",
+  "name": "Moss FIx",
+  "description": "",
+  "authors": [
+    "Gamma_02"
+  ],
+  "contact": {
+    "homepage": ""
+  },
+  "license": "MIT",
+  "icon": "assets/moss-fix/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.gamma_02.mossFix.fabric.MossFixFabric"
+    ],
+    "fabric-datagen": [
+      "net.gamma_02.mossFix.fabric.FabricDataGen"
+    ]
+  },
+  "mixins": [
+    "moss-fix.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
