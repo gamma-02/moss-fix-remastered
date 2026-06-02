@@ -5,7 +5,8 @@
   "minVersion": "0.8",
   "mixins": [
     "FeatureMixin",
-    "WorldGenRegionAccessor"
+    "MossBlockMixin",
+    "PackRepositoryMixin"
   ],
   "injectors": {
     "defaultRequire": 1
