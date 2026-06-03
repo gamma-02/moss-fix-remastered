@@ -1,0 +1,13 @@
+{
+  "values": [
+    "#c:sands",
+    "#c:gravels",
+    "minecraft:sand",
+    "minecraft:red_sand",
+    "minecraft:gravel"
+  ],
+  "remove": [
+    "minecraft:suspicious_gravel",
+    "minecraft:suspicious_sand"
+  ]
+}

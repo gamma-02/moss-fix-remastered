@@ -1,0 +1,10 @@
+{
+  "pack": {
+    "pack_format": 48,
+    "description": {
+      "type": "translatable",
+      "translate": "resourcepack.mossfix.spread_sands.description",
+      "color": "green"
+    }
+  }
+}

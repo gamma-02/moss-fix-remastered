@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "moss-fix",
+  "id": "mossfix",
   "version": "${version}",
   "name": "Moss Fix",
-  "description": "Highly configurable server-side mod that fixes moss by allowing spread under transparent blocks",
+  "description": "Highly configurable (or will be) server-side mod that fixes moss by allowing spread under transparent blocks",
   "authors": [
     "Gamma_02"
   ],
@@ -11,7 +11,7 @@
     "homepage": "https://modrinth.com/mod/moss-fix"
   },
   "license": "MIT",
-  "icon": "assets/moss-fix/icon.png",
+  "icon": "assets/mossfix/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -22,7 +22,7 @@
     ]
   },
   "mixins": [
-    "moss-fix.mixins.json"
+    "mossfix.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.19.3",

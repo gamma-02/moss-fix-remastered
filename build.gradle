@@ -2,6 +2,7 @@ plugins {
     id 'dev.architectury.loom' version '1.14-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+    id 'xyz.wagyourtail.manifold' version '1.1.1-SNAPSHOT' apply false
 }
 
 architectury {
@@ -17,6 +18,7 @@ subprojects {
     apply plugin: 'dev.architectury.loom'
     apply plugin: 'architectury-plugin'
     apply plugin: 'maven-publish'
+    apply plugin: 'xyz.wagyourtail.manifold'
 
     base {
         // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
@@ -31,7 +33,21 @@ subprojects {
         // for more information about repositories.
     }
 
+    manifold {
+        version = "2026.1.6"
+
+        preprocessor {
+            ideActiveConfig = "/common/main/java/build.properties" //todo
+
+            config {
+                property("MC_VERSION", project.minecraft_version.replace('.', "_"))
+            }
+        }
+    }
+
     dependencies {
+        implementation 'systems.manifold:manifold-preprocessor:2026.1.6' // Use latest preprocessor
+
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         mappings loom.officialMojangMappings()
     }

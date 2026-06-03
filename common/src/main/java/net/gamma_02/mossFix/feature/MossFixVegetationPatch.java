@@ -35,12 +35,13 @@ public class MossFixVegetationPatch extends VegetationPatchFeature {
 
 
         if(level instanceof WorldGenRegion){
+            LOGGER.debug("Generated in world gen level!");
             return super.place(featurePlaceContext);
         }
         else if (level instanceof ServerLevel)
         {
             //todo: Implement custom placement code here. This should (SHOULD) only happen when we're bonemealing moss!
-            LOGGER.info("Generated in server level!");
+            LOGGER.debug("Generated in server level!");
             return bonemealFixPlace(featurePlaceContext);
         }
 
@@ -114,7 +115,7 @@ public class MossFixVegetationPatch extends VegetationPatchFeature {
                     // we just need to check if the moss block's face is sturdy ( or another config predicate )
                     //todo: config: we should make it able to replace blocks like. stairs, things with mostly full hitboxes.
                     // maybe even anything in the tag! who knows
-                    // ~~air~~
+                    // ~~even air~~
                     if (blockState.isFaceSturdy(level, mossPos, surfaceUp)) {
                         boolean addExtraBottomBlock = config.extraBottomBlockChance > 0.0F &&
                                 rand.nextFloat() < config.extraBottomBlockChance;
@@ -242,6 +243,7 @@ public class MossFixVegetationPatch extends VegetationPatchFeature {
                     return j != 0;
                 }
 
+                //todo: config for overwriting infested blocks!
                 level.setBlock(mossPos, mossState, 2);
 
                 mossPos.move(config.surface.getDirection());

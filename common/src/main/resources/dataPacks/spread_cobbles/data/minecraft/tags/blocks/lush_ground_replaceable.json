@@ -1,0 +1,11 @@
+{
+  "values": [
+    "#c:cobblestones",
+    "minecraft:cobblestone",
+    "minecraft:cobbled_deepslate"
+  ],
+  "remove": [
+    "#c:cobblestones/mossy",
+    "minecraft:mossy_cobblestone"
+  ]
+}

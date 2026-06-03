@@ -17,9 +17,9 @@ public class MossBlockMixin {
     @WrapOperation(method = "isValidBonemealTarget", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;isAir()Z"))
     public boolean shouldBonemeal(BlockState instance,
                                   Operation<Boolean> original,
-                                  @Local(argsOnly = true, name = "levelReader") LevelReader levelReader,
-                                  @Local(argsOnly = true, name = "blockPos") BlockPos blockPos
+                                  LevelReader levelReader,
+                                  BlockPos blockPos
     ){
-        return instance.isRedstoneConductor(levelReader, blockPos.above());
+        return !instance.isRedstoneConductor(levelReader, blockPos.above());
     }
 }
