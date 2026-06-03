@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
-//note: a lot of this infrastructure is heavily inspired by SimpleVoiceChat!
+//note: a lot of this infrastructure is heavily inspired by SimpleVoiceChat! Thank you henkelmax for making your code public!!!
 public class MossFixDataPack extends AbstractPackResources implements Pack.ResourcesSupplier {
 
     private final String[] extraNamespaces;
@@ -77,7 +77,7 @@ public class MossFixDataPack extends AbstractPackResources implements Pack.Resou
     @Override
     public void listResources(PackType packType, final String namespace, String prefix, ResourceOutput resourceOutput) {
         try {
-            URL url = MossFix.class.getResource(getPath());
+            URL url = MossFix.class.getResource(getPath()); //todo: make this work in development environment w/ preprocessor
             if (url == null) {
                 return;
             }
@@ -97,12 +97,22 @@ public class MossFixDataPack extends AbstractPackResources implements Pack.Resou
 
                     //build the location of each specific resource from a possibly resourcelocation format-nonconforming path
                     //and remove the beginning of the file location from the front of it
+                    #if MC_VERSION != "1_20_6" && MC_VERSION != "1_20_5" && MC_VERSION != "1_20_4" && MC_VERSION != "1_20_3"
                     ResourceLocation location = ResourceLocation.fromNamespaceAndPath(
                             namespace,
                             convertPath(path).substring(
                                     convertPath(namespacePath).length() + 1
                             )
                     );
+                    #else
+                    ResourceLocation location = new ResourceLocation(
+                            namespace,
+                            convertPath(path).substring(
+                                    convertPath(namespacePath).length() + 1
+                            )
+                    );
+                    #endif
+
 
                     resourceOutput.accept(location, getResource(packType, location));
                 });
@@ -147,6 +157,7 @@ public class MossFixDataPack extends AbstractPackResources implements Pack.Resou
         return this;
     }
 
+    @SuppressWarnings("unused")
     public PackPlatform getPlatform() {
         return platform;
     }

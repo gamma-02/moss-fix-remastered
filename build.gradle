@@ -1,8 +1,32 @@
+import java.nio.file.FileSystems
+import java.nio.file.Files
+import java.nio.file.StandardOpenOption
+
 plugins {
     id 'dev.architectury.loom' version '1.14-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
     id 'xyz.wagyourtail.manifold' version '1.1.1-SNAPSHOT' apply false
+}
+
+if (System.getProperty("idea.sync.active") == "true") {
+    var preproccerConfigPath = rootDir.toPath().resolve("build.properties")
+    System.out.println("Current preprocessor file: " + Files.readString(preproccerConfigPath))
+
+    List<String> lines = Files.readAllLines(preproccerConfigPath)
+
+    var mcVersionIndex = lines.findIndexOf {it.startsWith("MC_VERSION")}
+    lines.set(mcVersionIndex, "MC_VERSION=${project.minecraft_version.replace('.', "_")}")
+
+    StringBuilder b = new StringBuilder()
+    for (var line : lines) {
+        b.append(line).append("\n")
+    }
+
+    System.out.println("New preprocessor file: " + b)
+
+    Files.writeString(preproccerConfigPath, b.toString(), StandardOpenOption.TRUNCATE_EXISTING)
+//    Files.delete(preproccerConfigPath)
 }
 
 architectury {
@@ -22,7 +46,7 @@ subprojects {
 
     base {
         // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
-        archivesName = "$rootProject.archives_name-$project.name"
+        archivesName = "$rootProject.archives_name-$rootProject.minecraft_version-$project.name"
     }
 
     repositories {
@@ -37,7 +61,7 @@ subprojects {
         version = "2026.1.6"
 
         preprocessor {
-            ideActiveConfig = "/common/main/java/build.properties" //todo
+            ideActiveConfig = "/common/main/java/build.properties"
 
             config {
                 property("MC_VERSION", project.minecraft_version.replace('.', "_"))

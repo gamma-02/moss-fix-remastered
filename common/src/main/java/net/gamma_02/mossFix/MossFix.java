@@ -20,16 +20,20 @@ public final class MossFix {
 
         #if MC_VERSION == "1_21_1"
         WHOLE_MOD_LOGGER.info("Initializing Moss Fix for 1.21.1");
+        #elif MC_VERSION == "1_21"
+        WHOLE_MOD_LOGGER.info("Initializing Moss Fix for 1.21");
+        #elif MC_VERSION == "1_20_6"
+        WHOLE_MOD_LOGGER.info("Initializing Moss Fix for 1.20.6");
         #endif
 
         SPREAD_COBBLES = new MossFixDataPack("spread_cobbles",
                 Component.translatable("resourcepack.mossfix.spread_cobbles"),
-                Set.of(),
+                Set.of("c"),
                 MossFixDataPack.PackPlatform.COMMON);
 
         SPREAD_SANDS = new MossFixDataPack("spread_sands",
                 Component.translatable("resourcepack.mossfix.spread_sands"),
-                Set.of(),
+                Set.of("c"),
                 MossFixDataPack.PackPlatform.COMMON);
 
     }
