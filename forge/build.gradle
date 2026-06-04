@@ -85,6 +85,33 @@ components.java {
     }
 }
 
+modrinth {
+
+//    debugMode = true
+
+    if(!mainVersionMap.containsKey(rootProject.minecraft_version)){
+        throw new GradleException("${rootProject.minecraft_version} is not a valid version for upload to Modrinth!")
+    }
+
+    if(!rootProject.hasProperty('MODRINTH_TOKEN') && gradle.startParameter.taskNames.contains("modrinth")){
+        throw new GradleException("No Modrinth token found!")
+    }
+
+    token = rootProject.hasProperty('MODRINTH_TOKEN') ? rootProject.getProperty('MODRINTH_TOKEN') : "" // Remember to have the MODRINTH_TOKEN environment variable set or else this will fail - just make sure it stays private!
+    projectId = "moss-fix" // This can be the project ID or the slug. Either will work!
+    versionNumber = "${rootProject.mod_version}" // You don't need to set this manually. Will fail if Modrinth has this version already
+    versionType = "release" // This is the default -- can also be `beta` or `alpha`
+    uploadFile = remapJar // With Loom, this MUST be set to `remapJar` instead of `jar`!
+    additionalFiles = [sourcesJar]
+    gameVersions = mainVersionMap.get(rootProject.minecraft_version) // Must be an array, even with only one version
+
+    loaders = ["forge"] // Must also be an array - no need to specify this if you're using Loom or ForgeGradle
+
+    changelog = modrinth_changelog
+
+    autoAddDependsOn = false
+}
+
 //publishing {
 //    publications {
 //        mavenForge(MavenPublication) {

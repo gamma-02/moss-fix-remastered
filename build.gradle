@@ -6,11 +6,9 @@ plugins {
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
     id 'xyz.wagyourtail.manifold' version '1.1.1-SNAPSHOT' apply false
+    id 'com.modrinth.minotaur' version "2.+" apply false
 }
 
-//tasks.withType(Test).configureEach {
-//    enabled = false
-//}
 
 String[] split_version = project.minecraft_version.split("\\.")
 
@@ -73,11 +71,44 @@ allprojects {
     version = rootProject.mod_version
 }
 
+ext {
+    modrinth_changelog = "Completely rewrote the mod :P\n" +
+            "\n" +
+            "Added configurability through builtin datapacks"
+
+    mainVersionMap = [
+            "26.1.2" : ["26.1.2", "26.1.1", "26.1"],
+            "1.21.11": ["1.21.11"],
+            "1.21.10": ["1.21.10", "1.21.9"],
+            "1.21.8" : ["1.21.8", "1.21.7"],
+            "1.21.6" : ["1.21.6"],
+            "1.21.5" : ["1.21.5"],
+            "1.21.4" : ["1.21.4"],
+            "1.21.3" : ["1.21.3", "1.21.2"],
+            "1.21.1" : ["1.21.1", "1.21"],
+            "1.20.6" : ["1.20.6", "1.20.5"],
+            "1.20.4" : ["1.20.4", "1.20.3"],
+            "1.20.2" : ["1.20.2"],
+            "1.20.1" : ["1.20.1", "1.20"],
+            "1.19.4" : ["1.19.4"],
+            "1.19.3" : ["1.19.3"],
+            "1.19.2" : ["1.19.2", "1.19.1"],
+            "1.19"   : ["1.19"],
+            "1.18.2" : ["1.18.2", "1.18.1", "1.18"],
+            "1.17.1" : ["1.17.1"]
+    ]
+}
+
 subprojects {
     apply plugin: 'dev.architectury.loom'
     apply plugin: 'architectury-plugin'
     apply plugin: 'maven-publish'
     apply plugin: 'xyz.wagyourtail.manifold'
+    apply plugin: 'com.modrinth.minotaur'
+
+//    System.out.println("Project name: " + project.name)
+
+
 
     base {
         // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
