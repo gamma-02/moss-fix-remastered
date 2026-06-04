@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+  versions=("1.21.1" "1.21" "1.20.6" "1.20.5" "1.20.4" "1.20.3" "1.20.2" "1.20.1" "1.20")
+else
+  versions=( "$@" )
+  if [[ $1 = "-h" || $1 = "-help" || $1 = "help" ]]; then
+    printf "This script builds this project for multiple versions!\nYou can specify them in the command line seperated by spaces,\n or give no arguments to build for all versions.\n"
+    exit
+  fi
+fi
+
+#versions=("1.21.1" "1.21" "1.20.6" "1.20.5" "1.20.4" "1.20.3" "1.20.2" "1.20.1" "1.20")
+#versions=("1.20.4")
+#versions=("1.20.1")
+
+#declare -A jdk_21=(["1.21.1"]=1 ["1.21"]=1 ["1.20.6"]=1 ["1.20.5"]=1)
+#declare -A jdk_17=(["1.20.4"]=1 ["1.20.3"]=1 ["1.20.2"]=1 ["1.20.1"]=1 ["1.20"]=1)
+
+for version in "${versions[@]}"; do
+  printf "\e[;32mBuilding %s\e[0m\n" "$version" # Building $version but GREEN
+#  cmd.exe /c ".\gradlew.bat -Pminecraft_version=""$version"" -Dorg.gradle.java.home=C:\Progra~1\Java\jdk-21 help"
+  cmd.exe /c ".\gradlew.bat -Pminecraft_version=""$version"" -Dorg.gradle.java.home=C:\Progra~1\Java\jdk-21 build"
+
+done

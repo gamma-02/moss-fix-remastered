@@ -1,6 +1,6 @@
 {
-  "resourcepack.mossfix.spread_cobbles.description": "Allows moss to spread on all kinds of cobblestone. I don't love that it's mossy cobblestone but whatever.",
+  "resourcepack.mossfix.spread_cobbles.description": "Allows moss to spread on all kinds of cobblestone.",
   "resourcepack.mossfix.spread_cobbles": "Spread Moss Over Cobblestone",
-  "resourcepack.mossfix.spread_sands.description": "Allows moss to spread on all kinds of sand. I don't like that it may spread over suspicious blocks.",
+  "resourcepack.mossfix.spread_sands.description": "Allows moss to spread on all kinds of sand and gravel.",
   "resourcepack.mossfix.spread_sands": "Spread Moss Over Sand and Gravel"
 }

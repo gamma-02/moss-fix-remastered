@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[1,)"
+loaderVersion = "[37,)"
 #issueTrackerURL = ""
 license = "MIT"
 
@@ -11,21 +11,18 @@ authors = "Gamma_02"
 description = '''
 Highly configurable (or will be) server-side mod that fixes moss by allowing spread under transparent blocks
 '''
-logoFile = "assets/mossfix/icon.png"
+logoFile = "icon.png"
 
 [[dependencies.mossfix]]
-modId = "neoforge"
-type = "required"
-versionRange = "[20,)"
+modId = "forge"
+mandatory = true
+versionRange = "[37,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.mossfix]]
 modId = "minecraft"
-type = "required"
-versionRange = "[1.20,)"
+mandatory = true
+versionRange = "[1.17.1,)"
 ordering = "NONE"
 side = "BOTH"
-
-[[mixins]]
-config = "mossfix.mixins.json"

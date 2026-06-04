@@ -18,4 +18,5 @@ public class FeatureMixin {
         MossFix.WHOLE_MOD_LOGGER.info("Redirecting VegetationPatch Registration! Registering in Minecraft namespace under id: {}", string);
         return original.call(string, new MossFixVegetationPatch(VegetationPatchConfiguration.CODEC));
     }
+
 }

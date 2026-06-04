@@ -1,5 +1,4 @@
 #!/bin/sh
-
 #
 # Copyright © 2015-2021 the original authors.
 #
@@ -63,7 +62,10 @@
 #       You can find Gradle at https://github.com/gradle/gradle/.
 #
 ##############################################################################
+export JAVA_HOME="/mnt/c/Program Files/Java/jdk-21"
+#echo "$JAVA_HOME"
 
+echo "SLKJFJFKLJSDFLKJSFDLK"
 # Attempt to set APP_HOME
 
 # Resolve links: $0 may be a link
@@ -87,7 +89,8 @@ done
 APP_BASE_NAME=${0##*/}
 # Discard cd standard output in case $CDPATH is set (https://github.com/gradle/gradle/issues/25036)
 APP_HOME=$( cd -P "${APP_HOME:-./}" > /dev/null && printf '%s\n' "$PWD" ) || exit
-
+echo "$APP_HOME"
+echo "$APP_BASE_NAME"
 # Use the maximum available, or set MAX_FD != -1 to use that value.
 MAX_FD=maximum
 
@@ -123,7 +126,7 @@ if [ -n "$JAVA_HOME" ] ; then
         # IBM's JDK on AIX uses strange locations for the executables
         JAVACMD=$JAVA_HOME/jre/sh/java
     else
-        JAVACMD=$JAVA_HOME/bin/java
+        JAVACMD=$JAVA_HOME/bin/java.exe
     fi
     if [ ! -x "$JAVACMD" ] ; then
         die "ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME
@@ -216,6 +219,12 @@ set -- \
         org.gradle.wrapper.GradleWrapperMain \
         "$@"
 
+#echo -- \
+#             "-Dorg.gradle.appname=$APP_BASE_NAME" \
+#             -classpath "$CLASSPATH" \
+#             org.gradle.wrapper.GradleWrapperMain \
+#             "$@"
+
 # Stop when "xargs" is not available.
 if ! command -v xargs >/dev/null 2>&1
 then
@@ -247,5 +256,7 @@ eval "set -- $(
         sed ' s~[^-[:alnum:]+,./:=@_]~\\&~g; ' |
         tr '\n' ' '
     )" '"$@"'
+
+echo "$JAVACMD" "$@"
 
 exec "$JAVACMD" "$@"

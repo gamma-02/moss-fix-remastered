@@ -11,18 +11,25 @@ authors = "Gamma_02"
 description = '''
 Highly configurable (or will be) server-side mod that fixes moss by allowing spread under transparent blocks
 '''
-logoFile = "assets/mossfix/icon.png"
+logoFile = "icon.png" #because neoforge 1.20.3 hates slashes in path descriptions???
+
+#[[dependencies.mossfix]]
+#modId = "forge"
+#mandatory = true
+#versionRange = "[46,)"
+#ordering = "NONE"
+#side = "BOTH"
 
 [[dependencies.mossfix]]
 modId = "neoforge"
-type = "required"
+mandatory = true
 versionRange = "[20,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.mossfix]]
 modId = "minecraft"
-type = "required"
+mandatory = true
 versionRange = "[1.20,)"
 ordering = "NONE"
 side = "BOTH"

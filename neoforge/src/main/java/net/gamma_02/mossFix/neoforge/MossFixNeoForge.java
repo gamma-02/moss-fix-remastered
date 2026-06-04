@@ -7,8 +7,6 @@ import net.neoforged.fml.common.Mod;
 public final class MossFixNeoForge {
 
     public MossFixNeoForge() {
-
-
         // Run our common setup.
         MossFix.init();
 

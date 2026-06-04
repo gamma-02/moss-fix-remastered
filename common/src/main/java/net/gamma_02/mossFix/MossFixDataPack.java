@@ -5,19 +5,27 @@ import net.minecraft.SharedConstants;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.*;
+import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+#if MC_NVERSION > 12004
 import net.minecraft.server.packs.repository.KnownPack;
+import java.util.Optional;
+#elif MC_NVERSION >= 12002
+import java.util.Optional;
+#endif
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.IoSupplier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
+
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -28,21 +36,55 @@ public class MossFixDataPack extends AbstractPackResources implements Pack.Resou
 
     private final PackPlatform platform;
 
+    #if MC_NVERSION > 12004
+
     public MossFixDataPack(String id, Component name, Set<String> extraNamespaces, PackPlatform platform) {
         super(new PackLocationInfo(id, name, PackSource.BUILT_IN, Optional.of( new KnownPack(MossFix.MOD_ID, id, "1.0.0"))));//i guess increment this? lol
         this.extraNamespaces = extraNamespaces.toArray(new String[0]);
         this.platform = platform;
     }
 
+    #else
+
+    private final String name;
+    private final String description;
+
+    public MossFixDataPack(String id, String name, String description, Set<String> extraNamespaces, PackPlatform platform) {
+        super(id, true);
+        this.name = name;
+        this.description = description;
+        this.extraNamespaces = extraNamespaces.toArray(new String[0]);
+        this.platform = platform;
+
+    }
+    #endif
+
+
+
     public Pack toPack() {
         int packVersion = SharedConstants.getCurrentVersion().getPackVersion(PackType.SERVER_DATA);
+
+        #if MC_NVERSION > 12004
+
         Pack.Metadata meta = Pack.readPackMetadata(location(), this, packVersion);
 
         if(meta == null) {
-            throw new IllegalStateException("Could not find builtin resource pack info");
+            throw new IllegalStateException("Could not find builtin resource pack metadata");
         }
 
         return Pack.readMetaAndCreate(location(), this, PackType.SERVER_DATA, new PackSelectionConfig(false, Pack.Position.TOP, false));
+
+        #else
+
+        Pack.Info info = Pack.readPackInfo("", this#if MC_NVERSION > 12001, packVersion #endif);
+
+        if(info == null) {
+            throw new IllegalStateException("Could not find builtin resource pack info");
+        }
+
+        return Pack.create(packId(), Component.literal(name), false, this, info, #if MC_NVERSION <= 12001PackType.SERVER_DATA,#endif Pack.Position.TOP, false, PackSource.BUILT_IN);
+
+        #endif
     }
 
     private String getPath() {
@@ -77,7 +119,7 @@ public class MossFixDataPack extends AbstractPackResources implements Pack.Resou
     @Override
     public void listResources(PackType packType, final String namespace, String prefix, ResourceOutput resourceOutput) {
         try {
-            URL url = MossFix.class.getResource(getPath()); //todo: make this work in development environment w/ preprocessor
+            URL url = MossFix.class.getResource(getPath());
             if (url == null) {
                 return;
             }
@@ -97,14 +139,17 @@ public class MossFixDataPack extends AbstractPackResources implements Pack.Resou
 
                     //build the location of each specific resource from a possibly resourcelocation format-nonconforming path
                     //and remove the beginning of the file location from the front of it
-                    #if MC_VERSION != "1_20_6" && MC_VERSION != "1_20_5" && MC_VERSION != "1_20_4" && MC_VERSION != "1_20_3"
+                    #if MC_NVERSION >= 12100
+
                     ResourceLocation location = ResourceLocation.fromNamespaceAndPath(
                             namespace,
                             convertPath(path).substring(
                                     convertPath(namespacePath).length() + 1
                             )
                     );
+
                     #else
+
                     ResourceLocation location = new ResourceLocation(
                             namespace,
                             convertPath(path).substring(
@@ -147,6 +192,8 @@ public class MossFixDataPack extends AbstractPackResources implements Pack.Resou
     @Override
     public void close() { }
 
+    #if MC_NVERSION > 12004
+
     @Override
     public @NotNull PackResources openPrimary(PackLocationInfo packLocationInfo) {
         return this;
@@ -157,10 +204,60 @@ public class MossFixDataPack extends AbstractPackResources implements Pack.Resou
         return this;
     }
 
+    #elif MC_NVERSION > 12001
+
+    @Override
+    public @NotNull PackResources openPrimary(String uhhh) {
+        return this;
+    }
+
+    @Override
+    public @NotNull PackResources openFull(String uhhh, Pack.Info info) {
+        return this;
+    }
+
+    #else
+
+    @Override
+    public @NotNull PackResources open(String string) {
+        return this;
+    }
+
+    #endif
+
+    @Override
+    public @Nullable <T> T getMetadataSection(MetadataSectionSerializer<T> metadataSectionSerializer) throws IOException {
+        if(metadataSectionSerializer.getMetadataSectionName().equals("pack")){
+            #if MC_NVERSION > 12004
+
+            //noinspection unchecked
+            return ((T) new PackMetadataSection(
+                    Component.translatable("resourcepack.mossfix." + location().id() + ".description"),
+                    SharedConstants.getCurrentVersion().getPackVersion(PackType.SERVER_DATA)#if MC_NVERSION >= 12002,
+                    Optional.empty() #endif
+            ));
+
+            #else
+
+            //noinspection unchecked
+            return ((T) new PackMetadataSection(
+                    Component.literal(description),
+                    SharedConstants.getCurrentVersion().getPackVersion(PackType.SERVER_DATA)#if MC_NVERSION >= 12002,
+                    Optional.empty() #endif
+            ));
+
+            #endif
+        }
+
+        return super.getMetadataSection(metadataSectionSerializer);
+    }
+
     @SuppressWarnings("unused")
     public PackPlatform getPlatform() {
         return platform;
     }
+
+
 
     public enum PackPlatform {
         COMMON("dataPacks"),

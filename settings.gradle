@@ -15,4 +15,30 @@ rootProject.name = 'moss-fix'
 
 include 'common'
 include 'fabric'
-include 'neoforge'
+
+if (hasProperty('minecraft_version')) {
+
+    def version = getProperty('minecraft_version')
+
+    if(getProperty('debugging_buildscripts') == "true") {
+        System.out.println("Version: " + version)
+    }
+
+    //[1.20.2,)
+    if (((version as String) <=> "1.20.2") >= 0) {
+        if(getProperty('debugging_buildscripts') == "true") {
+            System.out.println("Using neoforge")
+        }
+
+        include 'neoforge'
+    }
+
+    //(,1.20.5)U(1.20.5,1.20.6]
+    if (((version as String) <=> "1.20.4") <= 0 || (version as String) == "1.20.6") {
+        if(getProperty('debugging_buildscripts') == "true") {
+            System.out.println("Using forge")
+        }
+
+        include 'forge'
+    }
+}

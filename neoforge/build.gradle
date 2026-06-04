@@ -39,6 +39,14 @@ dependencies {
         neoForge "net.neoforged:neoforge:$rootProject.mc_1_21_neoforge_version"
     } else if (rootProject.minecraft_version == "1.20.6"){
         neoForge "net.neoforged:neoforge:$rootProject.mc_1_20_6_neoforge_version"
+    } else if (rootProject.minecraft_version == "1.20.5"){
+        neoForge "net.neoforged:neoforge:$rootProject.mc_1_20_5_neoforge_version"
+    } else if (rootProject.minecraft_version == "1.20.4"){
+        neoForge "net.neoforged:neoforge:$rootProject.mc_1_20_4_neoforge_version"
+    } else if (rootProject.minecraft_version == "1.20.3"){
+        neoForge "net.neoforged:neoforge:$rootProject.mc_1_20_3_neoforge_version"
+    } else if (rootProject.minecraft_version == "1.20.2"){
+        neoForge "net.neoforged:neoforge:$rootProject.mc_1_20_2_neoforge_version"
     }
 
     // Add manifold to -processorpath for javac
@@ -51,9 +59,10 @@ dependencies {
 processResources {
     inputs.property 'version', project.version
 
-    filesMatching('META-INF/neoforge.mods.toml') {
+    filesMatching('META-INF/*.toml') {
         expand version: project.version
     }
+
 }
 
 shadowJar {
