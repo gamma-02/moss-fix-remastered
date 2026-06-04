@@ -14,7 +14,8 @@ architectury {
     }
 
     //(,1.20.5)U(1.20.5,1.20.6]
-    if (((rootProject.minecraft_version as String) <=> "1.20.4") <= 0 ||
+    if (((rootProject.minecraft_version as String) <=> "1.20.2") <= 0 ||
+            (rootProject.minecraft_version as String) == "1.20.4"||
             (rootProject.minecraft_version as String) == "1.20.6") {
 
         if(getProperty('debugging_buildscripts') == "true") {
