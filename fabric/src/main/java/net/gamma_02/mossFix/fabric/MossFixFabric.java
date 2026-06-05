@@ -2,6 +2,7 @@ package net.gamma_02.mossFix.fabric;
 
 import com.mojang.logging.LogUtils;
 import net.gamma_02.mossFix.MossFix;
+import net.gamma_02.mossFix.FileSystemUtils;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 
@@ -14,11 +15,6 @@ public final class MossFixFabric implements ModInitializer {
 
     public static final Logger FABRIC_MOD_LOGGER = LogUtils.getLogger();
 
-    private static FileSystemUtils.FileSystemHolder modFileSystem = null;
-
-    public static FileSystemUtils.FileSystemHolder getModFileSystem(){
-        return modFileSystem;
-    }
 
     @Override
     public void onInitialize() {
@@ -39,16 +35,16 @@ public final class MossFixFabric implements ModInitializer {
             }
 
             URI resourceUri = url.toURI();
-            modFileSystem = FileSystemUtils.getJarFileSystem(resourceUri, true);
+            MossFix.modFileSystem = FileSystemUtils.getJarFileSystem(resourceUri, true);
 
         } catch (IOException | URISyntaxException e) {
             FABRIC_MOD_LOGGER.error("Unable to load mod jar file system!", e);
         }
 
 
-        if(modFileSystem != null && modFileSystem.opened()){
+        if(MossFix.modFileSystem != null && MossFix.modFileSystem.opened()){
             FABRIC_MOD_LOGGER.info("Loaded mod jar file system!");
-        } else if (modFileSystem != null) {
+        } else if (MossFix.modFileSystem != null) {
             FABRIC_MOD_LOGGER.info("Got mod jar file system!");
         }
 

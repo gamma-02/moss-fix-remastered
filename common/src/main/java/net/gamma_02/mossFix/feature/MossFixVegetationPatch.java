@@ -35,13 +35,10 @@ public class MossFixVegetationPatch extends VegetationPatchFeature {
 
 
         if(level instanceof WorldGenRegion){
-            LOGGER.debug("Generated in world gen level!");
             return super.place(featurePlaceContext);
         }
         else if (level instanceof ServerLevel)
         {
-            //todo: Implement custom placement code here. This should (SHOULD) only happen when we're bonemealing moss!
-            LOGGER.debug("Generated in server level!");
             return bonemealFixPlace(featurePlaceContext);
         }
 

@@ -5,12 +5,21 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
+#if MC_VERSION < 12102
 import net.minecraft.world.level.block.MossBlock;
+#else
+
+import net.minecraft.world.level.block.BonemealableFeaturePlacerBlock;
+#endif
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-
+//I do love how I can just change the mixin target like this
+#if MC_VERSION < 12102
 @Mixin(MossBlock.class)
+#else
+@Mixin(BonemealableFeaturePlacerBlock.class)
+#endif
 public class MossBlockMixin {
 
     //todo: config here as well -- when should moss blocks be bonemealable?

@@ -9,10 +9,11 @@ plugins {
     id 'com.modrinth.minotaur' version "2.+" apply false
 }
 
+def slugged_version = project.minecraft_version.replace('.', "_");
 
 String[] split_version = project.minecraft_version.split("\\.")
 
-if (split_version.length < 3){
+if (split_version.length < 3) {
     var a = new String[3]
     a[0] = split_version[0]
     a[1] = split_version[1]
@@ -31,24 +32,24 @@ def numerical_mc_version = "$mc_major$mc_main$mc_minor"
 System.out.println("Using minecraft version: $project.minecraft_version, at numerical version: $numerical_mc_version")
 
 var preproccerConfigPath = rootDir.toPath().resolve("build.properties")
-if(debugging_buildscripts == "true") {
+if (debugging_buildscripts == "true") {
     System.out.println("Current preprocessor file: \n" + Files.readString(preproccerConfigPath))
 }
 
 List<String> lines = Files.readAllLines(preproccerConfigPath)
 
-var stringMcVersionIndex = lines.findIndexOf {it.startsWith("MC_VERSION")}
-if(stringMcVersionIndex != -1) {
-    lines.set(stringMcVersionIndex, "MC_VERSION=${project.minecraft_version.replace('.', "_")}")
+var stringMcVersionIndex = lines.findIndexOf { it.startsWith("MC_VERSION_STRING") }
+if (stringMcVersionIndex != -1) {
+    lines.set(stringMcVersionIndex, "MC_VERSION_STRING=${slugged_version}")
 } else {
-    lines.add("MC_VERSION=${project.minecraft_version.replace('.', "_")}")
+    lines.add("MC_VERSION_STRING=${slugged_version}")
 }
 
-var numericalMcVersionIndex = lines.findIndexOf {it.startsWith("MC_NVERSION")}
-if(numericalMcVersionIndex != -1) {
-    lines.set(numericalMcVersionIndex, "MC_NVERSION=${numerical_mc_version}")
+var numericalMcVersionIndex = lines.findIndexOf { it.startsWith("MC_VERSION") }
+if (numericalMcVersionIndex != -1) {
+    lines.set(numericalMcVersionIndex, "MC_VERSION=${numerical_mc_version}")
 } else {
-    lines.add("MC_NVERSION=${numerical_mc_version}")
+    lines.add("MC_VERSION=${numerical_mc_version}")
 }
 
 StringBuilder b = new StringBuilder()
@@ -56,7 +57,7 @@ for (var line : lines) {
     b.append(line).append("\n")
 }
 
-if(debugging_buildscripts == "true") {
+if (debugging_buildscripts == "true") {
     System.out.println("New preprocessor file: \n" + b)
 }
 
@@ -97,6 +98,8 @@ ext {
             "1.18.2" : ["1.18.2", "1.18.1", "1.18"],
             "1.17.1" : ["1.17.1"]
     ]
+
+    slugged_minecraft = slugged_version
 }
 
 subprojects {
@@ -107,7 +110,6 @@ subprojects {
     apply plugin: 'com.modrinth.minotaur'
 
 //    System.out.println("Project name: " + project.name)
-
 
 
     base {
@@ -130,8 +132,8 @@ subprojects {
             ideActiveConfig = "/common/main/java/build.properties"
 
             config {
-                property("MC_VERSION", project.minecraft_version.replace('.', "_"))
-                property("MC_NVERSION", "${numerical_mc_version}")
+                property("MC_VERSION_STRING", project.minecraft_version.replace('.', "_"))
+                property("MC_VERSION", "${numerical_mc_version}")
             }
         }
     }
@@ -149,14 +151,14 @@ subprojects {
         // If you remove this line, sources will not be generated.
         withSourcesJar()
 
-        if((rootProject.minecraft_version <=> "1.20.4") <= 0){
-            if(rootProject.debugging_buildscripts == "true") {
+        if ((rootProject.minecraft_version <=> "1.20.4") <= 0) {
+            if (rootProject.debugging_buildscripts == "true") {
                 System.out.println("Setting compatability to java 17")
             }
             sourceCompatibility = JavaVersion.VERSION_17
             targetCompatibility = JavaVersion.VERSION_17
         } else {
-            if(rootProject.debugging_buildscripts == "true") {
+            if (rootProject.debugging_buildscripts == "true") {
                 System.out.println("Setting compatability to java 21")
             }
             sourceCompatibility = JavaVersion.VERSION_21
@@ -165,7 +167,7 @@ subprojects {
     }
 
     tasks.withType(JavaCompile).configureEach {
-        if((rootProject.minecraft_version <=> "1.20.4") <= 0) {
+        if ((rootProject.minecraft_version <=> "1.20.4") <= 0) {
             it.options.release = 17
         } else {
             it.options.release = 21

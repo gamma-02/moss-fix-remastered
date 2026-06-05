@@ -36,6 +36,19 @@ modrinth {
 
     debugMode = true
 
+    if(!gradle.startParameter.taskNames.contains("modrinth")){
+        debugMode = true
+        token = ""
+        projectId = "moss-fix"
+        versionNumber = "${rootProject.mod_version}"
+        versionType = "alpha"
+        uploadFile = remapJar
+        gameVersions = [rootProject.minecraft_version]
+        loaders = ["you should not be seeing this :P"]
+        autoAddDependsOn = false
+        return
+    }
+
     if(!mainVersionMap.containsKey(rootProject.minecraft_version)){
         throw new GradleException("${rootProject.minecraft_version} is not a valid version for upload to Modrinth!")
     }

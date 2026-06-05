@@ -48,6 +48,9 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
 //    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.4"))
+    implementation(include("io.github.llamalad7:mixinextras-forge:0.5.4"))
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }
@@ -88,6 +91,19 @@ components.java {
 modrinth {
 
 //    debugMode = true
+
+    if(!gradle.startParameter.taskNames.contains("modrinth")){
+        debugMode = true
+        token = ""
+        projectId = "moss-fix"
+        versionNumber = "${rootProject.mod_version}"
+        versionType = "alpha"
+        uploadFile = remapJar
+        gameVersions = [rootProject.minecraft_version]
+        loaders = ["you should not be seeing this :P"]
+        autoAddDependsOn = false
+        return
+    }
 
     if(!mainVersionMap.containsKey(rootProject.minecraft_version)){
         throw new GradleException("${rootProject.minecraft_version} is not a valid version for upload to Modrinth!")

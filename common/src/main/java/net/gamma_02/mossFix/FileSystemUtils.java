@@ -1,4 +1,4 @@
-package net.gamma_02.mossFix.fabric;
+package net.gamma_02.mossFix;
 
 import java.io.IOException;
 import java.net.URI;
@@ -11,9 +11,6 @@ import java.util.Collections;
 import java.util.zip.ZipError;
 
 public class FileSystemUtils {
-
-
-
     public static FileSystemHolder getJarFileSystem(URI uri, boolean create) throws IOException {
         URI jarUri;
         String scheme = uri.getScheme();
