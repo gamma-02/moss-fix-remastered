@@ -15,6 +15,7 @@ import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
 #else
 import net.minecraft.server.packs.metadata.MetadataSectionType;
 #endif
+import java.net.URL;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 #if MC_VERSION > 12004
 import net.minecraft.server.packs.repository.KnownPack;
@@ -145,7 +146,7 @@ public class MossFixDataPack extends AbstractPackResources implements Pack.Resou
     public @Nullable IoSupplier<InputStream> getResource(PackType packType, Identifier identifier) {
         return getRootResource(packType.getDirectory(), identifier.getNamespace(), identifier.getPath());
     }
-    
+
     #endif
 
     @Nullable

@@ -1,14 +1,17 @@
 package net.gamma_02.mossFix.neoforge;
 
 import com.mojang.logging.LogUtils;
-import net.gamma_02.mossFix.FileSystemUtils;
+import net.neoforged.fml.common.Mod;
 import net.gamma_02.mossFix.MossFix;
+import org.slf4j.Logger;
+
+#if MC_VERSION >= 12109
+import net.gamma_02.mossFix.FileSystemUtils;
 import net.neoforged.fml.classloading.ModuleClassLoader;
 import net.neoforged.fml.classloading.transformation.TransformingClassLoader;
-import net.neoforged.fml.common.Mod;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +21,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
+
+#endif
 
 @Mod(MossFix.MOD_ID)
 public final class MossFixNeoForge {
