@@ -37,6 +37,10 @@ public final class MossFixFabric implements ModInitializer {
             URI resourceUri = url.toURI();
             MossFix.modFileSystem = FileSystemUtils.getJarFileSystem(resourceUri, true);
 
+            String dataPacksURI = resourceUri.toString();
+
+            MossFix.setModJarLocation(dataPacksURI.replace("!/dataPacks/", ""));
+
         } catch (IOException | URISyntaxException e) {
             FABRIC_MOD_LOGGER.error("Unable to load mod jar file system!", e);
         }

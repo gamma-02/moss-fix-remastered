@@ -5,6 +5,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.network.chat.Component;
 import org.slf4j.Logger;
 
+import java.net.URI;
 import java.util.Set;
 
 public final class MossFix {
@@ -19,6 +20,32 @@ public final class MossFix {
 
     public static FileSystemUtils.FileSystemHolder getModFileSystem(){
         return modFileSystem;
+    }
+
+    private static String modJarLoc = null;
+
+    public static void setModJarLocation(String uri){
+        if(modJarLoc != null){
+            return;
+        }
+        modJarLoc = uri;
+    }
+
+    //there is a lot of hackyness associated with Neoforge 1.21.9+ for some reason. don't ask me why.
+    public static String getModJarLocation(){
+        return modJarLoc;
+    }
+
+    private static boolean onNeoforge = false;
+
+    public static boolean isNeoforge(){
+        return onNeoforge;
+    }
+
+    public static void init(boolean neoforge){
+        onNeoforge = neoforge;
+
+        init();
     }
 
     public static void init() {

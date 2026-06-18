@@ -2,7 +2,6 @@ package net.gamma_02.mossFix;
 
 import com.google.common.collect.ImmutableSet;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import dev.architectury.injectables.targets.ArchitecturyTarget;
 import net.minecraft.SharedConstants;
 import net.minecraft.network.chat.Component;
 #if MC_VERSION >= 12111
@@ -19,6 +18,9 @@ import net.minecraft.server.packs.metadata.MetadataSectionType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 #if MC_VERSION > 12004
 import net.minecraft.server.packs.repository.KnownPack;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Optional;
 #elif MC_VERSION >= 12002
 import java.util.Optional;
@@ -27,15 +29,14 @@ import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.IoSupplier;
 #if MC_VERSION >= 12109
-import net.minecraft.server.packs.metadata.pack.PackFormat;
 import net.minecraft.util.InclusiveRange;
 #endif
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -107,33 +108,23 @@ public class MossFixDataPack extends AbstractPackResources implements Pack.Resou
     @ExpectPlatform
     public static boolean onNeoforge(){ throw new AssertionError(); }
 
-    private String getPath() {
-        #if MC_VERSION >= 12109
-        if(onNeoforge()){
-            return platform.packRootPath + "/" + packId() + "/";
-        }
-        #endif
-        return "/" + platform.packRootPath + "/" + packId() + "/";
+    private String getPath() { //can change this back to packPlatform.packRootPath
+        return "/dataPacks/" + packId() + "/";
     }
 
     @Nullable
     private InputStream get(String name){
         #if MC_VERSION >= 12109
-        if(onNeoforge()){
-            return MossFix.class.getClassLoader().getResourceAsStream(getPath() + name);
+        if(onNeoforge()) {
+            try {
+                return Files.newInputStream(Path.of(new URI(MossFix.getModJarLocation() + "!" + getPath() + name)));
+            } catch (IOException | URISyntaxException e) {
+                return null;
+            }
         }
         #endif
+
         return MossFix.class.getResourceAsStream(getPath() + name);
-    }
-
-    @Nullable
-    private IoSupplier<InputStream> getResource(String path){
-        InputStream resourceStream = get(path);
-        if (resourceStream == null) {
-            return null;
-        }
-
-        return () -> resourceStream;
     }
 
     @Override
@@ -151,30 +142,36 @@ public class MossFixDataPack extends AbstractPackResources implements Pack.Resou
     #else
 
     @Override
-    public @Nullable IoSupplier<InputStream> getResource(PackType packType, Identifier resourceLocation) {
-        return getRootResource(packType.getDirectory(), resourceLocation.getNamespace(), resourceLocation.getPath());
+    public @Nullable IoSupplier<InputStream> getResource(PackType packType, Identifier identifier) {
+        return getRootResource(packType.getDirectory(), identifier.getNamespace(), identifier.getPath());
     }
-
+    
     #endif
+
+    @Nullable
+    private IoSupplier<InputStream> getResource(String path){
+        InputStream resourceStream = get(path);
+        if (resourceStream == null) {
+            return null;
+        }
+
+        return () -> resourceStream;
+    }
 
     @Override
     public void listResources(PackType packType, final String namespace, String prefix, ResourceOutput resourceOutput) {
         try {
-
+            #if MC_VERSION < 12109
             URL url = MossFix.class.getResource(getPath());
-
-            #if MC_VERSION >= 12109
-            if(onNeoforge() && url == null){
-                url = MossFix.class.getClassLoader().getResource(getPath());
-            }
-            #endif
 
             if (url == null) {
                 return;
             }
 
+            #endif
+
             //gets the path from the dataPack directory to the pack's directory
-            Path namespacePath = Paths.get(url.toURI()).resolve(packType.getDirectory()).resolve(namespace);
+            Path namespacePath = Paths.get(#if MC_VERSION < 12109 url.toURI() #else new URI(MossFix.getModJarLocation() + "!" + getPath()) #endif).resolve(packType.getDirectory()).resolve(namespace);
 
             //path from dataPack directory to the specific resource prefix we actually want to list (e.g. tags)
             Path resPath = namespacePath.resolve(prefix);
@@ -244,6 +241,7 @@ public class MossFixDataPack extends AbstractPackResources implements Pack.Resou
             return ImmutableSet.of();
 
         // right now, these will only really contain Minecraft resources, since we're using them to configure moss spread over blocks
+        //but we might as well add the option to have extra namespaces
         return ImmutableSet.<String>builder().add("minecraft").add(extraNamespaces).build();
     }
 
