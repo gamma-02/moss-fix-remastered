@@ -12,7 +12,7 @@ else
     printf "This script builds this project for multiple versions!\nYou can specify them in the command line seperated by spaces,\n or give no arguments to build for all versions.\n"
     exit
   elif [[ $1 = "all" ]]; then
-    versions=("1.21.11" "1.21.10" "1.21.8" "1.21.6" "1.21.5" "1.21.4" "1.21.3" "1.21.1" "1.21" "1.20.6" "1.20.5" "1.20.4" "1.20.3" "1.20.2" "1.20.1" "1.20")
+    versions=("1.21.11" "1.21.10" "1.21.9" "1.21.8" "1.21.7" "1.21.6" "1.21.5" "1.21.4" "1.21.3" "1.21.1" "1.21" "1.20.6" "1.20.5" "1.20.4" "1.20.3" "1.20.2" "1.20.1" "1.20")
   elif [[ $1 = "main" ]]; then
     versions=( "${main_versions[@]}" )
   elif [[ $1 = "publish" ]]; then

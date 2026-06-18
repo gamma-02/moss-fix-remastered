@@ -73,9 +73,7 @@ allprojects {
 }
 
 ext {
-    modrinth_changelog = "Completely rewrote the mod :P\n" +
-            "\n" +
-            "Added configurability through builtin datapacks"
+    modrinth_changelog = "Added support for 1.21.2-1.21.11, fixed a couple lang issues"
 
     mainVersionMap = [
             "26.1.2" : ["26.1.2", "26.1.1", "26.1"],
